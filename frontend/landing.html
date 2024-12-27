@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page</title>
+    <style>
+        /* Basic styling for landing page */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f8ff;
+        }
+
+        .greeting {
+            font-size: 24px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .logout-button {
+            position: fixed;
+            top: 10px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .logout-button:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Greeting Message -->
+    <div class="greeting" id="greetingMessage"></div>
+
+    <!-- Logout Button -->
+    <button class="logout-button" id="logoutButton">Log Out</button>
+
+    <script>
+        // Function to get time-based greeting
+        function getGreeting() {
+            const hours = new Date().getHours();
+            if (hours < 12) {
+                return 'Good Morning';
+            } else if (hours < 18) {
+                return 'Good Afternoon';
+            } else {
+                return 'Good Evening';
+            }
+        }
+
+        // Check if the user is logged in
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+            // Redirect to login page if the user is not authenticated
+            window.location.href = 'login.html';
+        }
+
+        // Simulate fetching user data from an API or localStorage
+        const userData = JSON.parse(localStorage.getItem('userData'));
+        if (userData) {
+            const greeting = getGreeting();
+            const { firstName, lastName } = userData;
+
+            // Display the greeting message with user's first and last name
+            document.getElementById('greetingMessage').innerText = `${greeting} Mr. ${firstName} ${lastName}`;
+        } else {
+            // If user data doesn't exist, redirect to login page
+            window.location.href = 'login.html';
+        }
+
+        // Log out functionality
+        document.getElementById('logoutButton').addEventListener('click', function() {
+            // Remove the authentication token and user data from localStorage
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('userData');
+
+            // Redirect to the login page
+            window.location.href = 'login.html';
+        });
+    </script>
+
+</body>
+</html>
